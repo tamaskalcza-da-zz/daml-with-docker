@@ -1,0 +1,33 @@
+#
+# Copyright (c) 2021, Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '3.9'
+
+services:
+  # See: https://hub.docker.com/_/postgres
+  postgres-database:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+  ledger-api:
+    image: digitalasset-docker.jfrog.io/daml-on-sql:1.10.0
+    ports:
+      - ${LEDGER_PORT}:${LEDGER_PORT}
+    command: >
+      --address 0.0.0.0
+      --ledgerid ${LEDGER_ID}
+      --sql-backend-jdbcurl ${JDBC_URL}
+  json-api:
+    image: digitalasset-docker.jfrog.io/http-json:${DAML_SDK_VERSION}
+    restart: on-failure
+    ports:
+      - ${HTTP_PORT}:${HTTP_PORT}
+    command: >
+      --address 0.0.0.0
+      --ledger-port ${LEDGER_PORT}
+      --ledger-host ledger-api
+      --http-port ${HTTP_PORT}
