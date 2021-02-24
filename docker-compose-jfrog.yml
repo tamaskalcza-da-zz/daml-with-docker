@@ -9,7 +9,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
   ledger-api:
-    image: digitalasset-docker.jfrog.io/daml-on-sql:1.10.0
+    image: digitalasset-docker.jfrog.io/daml-on-sql:${DAML_SDK_VERSION}
     ports:
       - ${LEDGER_PORT}:${LEDGER_PORT}
     command: >
