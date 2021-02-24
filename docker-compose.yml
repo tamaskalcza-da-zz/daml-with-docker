@@ -23,11 +23,11 @@ services:
     depends_on:
       - postgres-database
     entrypoint: >
-      java -jar daml-on-sql-$DAML_SDK_VERSION.jar
+      java -jar daml-on-sql-${DAML_SDK_VERSION}.jar
         --address=0.0.0.0
         --port=${LEDGER_PORT}
-        --ledgerid=$LEDGER_ID
-        --sql-backend-jdbcurl=$JDBC_URL
+        --ledgerid=${LEDGER_ID}
+        --sql-backend-jdbcurl=${JDBC_URL}
     ports:
       - ${LEDGER_PORT}
   json-api:
