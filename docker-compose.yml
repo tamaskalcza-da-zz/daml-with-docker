@@ -25,10 +25,11 @@ services:
     entrypoint: >
       java -jar daml-on-sql-$DAML_SDK_VERSION.jar
         --address=0.0.0.0
+        --port=${LEDGER_PORT}
         --ledgerid=$LEDGER_ID
         --sql-backend-jdbcurl=$JDBC_URL
     ports:
-      - 6865:6865
+      - ${LEDGER_PORT}
   json-api:
     image: digitalasset/daml-sdk:${DAML_SDK_VERSION}
     restart: on-failure
@@ -37,7 +38,7 @@ services:
     entrypoint: >
       daml json-api
         --ledger-host=ledger-api
-        --ledger-port=6865
+        --ledger-port=${LEDGER_PORT}
         --http-port=${HTTP_PORT}
     ports:
       - ${HTTP_PORT}
