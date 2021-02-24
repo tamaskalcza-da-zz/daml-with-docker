@@ -29,7 +29,7 @@ services:
         --ledgerid=${LEDGER_ID}
         --sql-backend-jdbcurl=${JDBC_URL}
     ports:
-      - ${LEDGER_PORT}
+      - ${LEDGER_PORT}:${LEDGER_PORT}
   json-api:
     image: digitalasset/daml-sdk:${DAML_SDK_VERSION}
     restart: on-failure
@@ -37,8 +37,9 @@ services:
       - ledger-api
     entrypoint: >
       daml json-api
+        --address=0.0.0.0
         --ledger-host=ledger-api
         --ledger-port=${LEDGER_PORT}
         --http-port=${HTTP_PORT}
     ports:
-      - ${HTTP_PORT}
+      - ${HTTP_PORT}:${HTTP_PORT}
