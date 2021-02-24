@@ -17,12 +17,11 @@ services:
     image: digitalasset/daml-on-sql:${DAML_SDK_VERSION}
     depends_on:
       - postgres-database
-    entrypoint: >
-      java -jar daml-on-sql-${DAML_SDK_VERSION}.jar
-        --address=0.0.0.0
-        --port=${LEDGER_PORT}
-        --ledgerid=${LEDGER_ID}
-        --sql-backend-jdbcurl=${JDBC_URL}
+    command: >
+      --address=0.0.0.0
+      --port=${LEDGER_PORT}
+      --ledgerid=${LEDGER_ID}
+      --sql-backend-jdbcurl=${JDBC_URL}
     ports:
       - ${LEDGER_PORT}:${LEDGER_PORT}
   json-api:
@@ -30,11 +29,11 @@ services:
     restart: on-failure
     depends_on:
       - ledger-api
-    entrypoint: >
-      daml json-api
-        --address=0.0.0.0
-        --ledger-host=ledger-api
-        --ledger-port=${LEDGER_PORT}
-        --http-port=${HTTP_PORT}
+    entrypoint: daml json-api
+    command:
+      --address=0.0.0.0
+      --ledger-host=ledger-api
+      --ledger-port=${LEDGER_PORT}
+      --http-port=${HTTP_PORT}
     ports:
       - ${HTTP_PORT}:${HTTP_PORT}

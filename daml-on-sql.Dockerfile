@@ -6,5 +6,7 @@ ARG DAML_SDK_VERSION
 RUN curl --location \
   --remote-header-name \
   --remote-name \
-  --output "daml-on-sql-$DAML_SDK_VERSION.jar" \
+  --output "daml-on-sql.jar" \
   "https://github.com/digital-asset/daml/releases/download/v$DAML_SDK_VERSION/daml-on-sql-$DAML_SDK_VERSION.jar"
+
+ENTRYPOINT java -jar daml-on-sql.jar

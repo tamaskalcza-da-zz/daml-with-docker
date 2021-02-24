@@ -10,19 +10,24 @@ services:
       - POSTGRES_PASSWORD
   ledger-api:
     image: digitalasset-docker.jfrog.io/daml-on-sql:${DAML_SDK_VERSION}
+    depends_on:
+      - postgres-database
+    command: >
+      --address=0.0.0.0
+      --port=${LEDGER_PORT}
+      --ledgerid=${LEDGER_ID}
+      --sql-backend-jdbcurl=${JDBC_URL}
     ports:
       - ${LEDGER_PORT}:${LEDGER_PORT}
-    command: >
-      --address 0.0.0.0
-      --ledgerid ${LEDGER_ID}
-      --sql-backend-jdbcurl ${JDBC_URL}
   json-api:
     image: digitalasset-docker.jfrog.io/http-json:${DAML_SDK_VERSION}
     restart: on-failure
+    depends_on:
+      - ledger-api
+    command: >
+      --address=0.0.0.0
+      --ledger-host=ledger-api
+      --ledger-port=${LEDGER_PORT}
+      --http-port=${HTTP_PORT}
     ports:
       - ${HTTP_PORT}:${HTTP_PORT}
-    command: >
-      --address 0.0.0.0
-      --ledger-port ${LEDGER_PORT}
-      --ledger-host ledger-api
-      --http-port ${HTTP_PORT}
