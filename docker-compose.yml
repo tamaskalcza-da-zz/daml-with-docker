@@ -29,8 +29,8 @@ services:
     restart: on-failure
     depends_on:
       - ledger-api
-    entrypoint: daml json-api
-    command:
+    entrypoint: ["daml", "json-api"]
+    command: >
       --address=0.0.0.0
       --ledger-host=ledger-api
       --ledger-port=${LEDGER_PORT}

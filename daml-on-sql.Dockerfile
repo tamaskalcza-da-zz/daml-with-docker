@@ -7,4 +7,4 @@ RUN curl --location \
   --output "daml-on-sql.jar" \
   "https://github.com/digital-asset/daml/releases/download/v$DAML_SDK_VERSION/daml-on-sql-$DAML_SDK_VERSION.jar"
 
-ENTRYPOINT java -jar daml-on-sql.jar
+ENTRYPOINT ["java", "-jar", "daml-on-sql.jar"]
