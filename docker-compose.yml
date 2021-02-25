@@ -25,11 +25,15 @@ services:
     ports:
       - ${LEDGER_PORT}:${LEDGER_PORT}
   json-api:
-    image: digitalasset/daml-sdk:${DAML_SDK_VERSION}
+    build:
+      context: .
+      dockerfile: http-json.Dockerfile
+      args:
+        - DAML_SDK_VERSION=${DAML_SDK_VERSION}
+    image: digitalasset/http-json:${DAML_SDK_VERSION}
     restart: on-failure
     depends_on:
       - ledger-api
-    entrypoint: ["daml", "json-api"]
     command: >
       --address=0.0.0.0
       --ledger-host=ledger-api
